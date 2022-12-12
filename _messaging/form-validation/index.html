@@ -1,0 +1,111 @@
+---
+layout: page
+title: Form Validation
+---
+
+<style>
+    label {
+        display: inline-block;
+        margin: 4px 0;
+    }
+    input {
+        display: block;
+        margin: 4px 0;
+    }
+    #page-notice[hidden] {
+        display: none;
+    }
+    .field {
+        margin: 8px 0;
+    }
+    input[aria-invalid=true] {
+        border: 1px solid #cc3300;
+    }
+    .input-validation__description {
+        margin: 4px 0;
+    }
+</style>
+
+<section hidden id="page-notice" class="page-notice page-notice--attention" role="region" aria-label="Attention">
+    <div class="page-notice__header">
+        <svg class="icon icon--attention-filled" focusable="false" height="24" width="24" role="img" aria-label="Attention">
+            <use xlink:href="../../svg/icons.svg#icon-attention-filled"></use>
+        </svg>
+    </div>
+    <div class="page-notice__main">
+        <h2 class="page-notice__title">Please correct the following fields:</h2>
+        <ol>
+            <li><a href="#age-2">Age</a> - please enter a valid age (for example, 35)</li>
+            <li><a href="#shoesize-2">Shoe-size</a> - please enter a valid shoe size (for example, 8.5)</li>
+        </ol>
+    </div>
+</section>
+
+<h1>{{ page.title }}</h1>
+
+<h2 class="clipped">Readme</h2>
+<p>Submit each form to display a hard-coded page notice.</p>
+<p>Please <a href={{ "messaging/form-validation" | prepend: site.patterns_baseurl | prepend: site.patterns_url }}>read the documentation</a> to understand how these examples were created.</p>
+<p><i>Updated</i>: March 30th, 2022 (visual updates only)</p>
+
+<hr />
+<h2 class="clipped">Examples</h2>
+<h3>Example 1: Server-Side</h3>
+
+<form action="post.html#pagenotice">
+    <fieldset>
+        <legend>Your Details</legend>
+        <div class="field">
+            <label for="age-1">Age</label>
+            <input autocomplete="false" id="age-1" type="text" name="age" />
+        </div>
+        <div class="field">
+            <label for="shoesize-1">Shoe-Size</label>
+            <input autocomplete="false" id="shoesize-1" type="text" name="shoesize" />
+        </div>
+    </fieldset>
+    <input class="button" type="submit" />
+</form>
+
+<hr />
+
+<h3>Example 2: Client-Side</h3>
+
+<form action="post.html#pagenotice" novalidate>
+    <fieldset>
+        <legend>Your Details</legend>
+        <div class="field">
+            <label for="age-2">Age</label>
+            <input autocomplete="false" id="age-2" type="text" name="age" aria-describedby="age-1-error" />
+            <div class="input-validation__status" hidden>
+                <p class="input-validation__description" id="age-2-error">Attention! Please enter a valid age.</p>
+            </div>
+        </div>
+        <div class="field">
+            <label for="shoesize-2">Shoe-Size</label>
+            <input autocomplete="false" id="shoesize-2" type="text" name="shoesize" aria-describedby="shoesize-2-error" />
+            <div class="input-validation__status" hidden>
+                <p class="input-validation__description" id="shoesize-2-error">Attention! Please enter a valid shoe size.</p>
+            </div>
+        </div>
+    </fieldset>
+    <input class="button" type="submit" />
+</form>
+
+<hr />
+
+<script>
+    document.querySelector('form[novalidate]').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        var pageNoticeEl = document.querySelector('#page-notice');
+        pageNoticeEl.hidden = false;
+        pageNoticeEl.setAttribute('tabindex', '-1');
+        pageNoticeEl.focus();
+
+        Array.prototype.slice.call(document.querySelectorAll('input[aria-describedby]')).forEach(function(el) {
+            el.setAttribute('aria-invalid', 'true');
+            el.nextElementSibling.hidden = false;
+        });
+    });
+</script>

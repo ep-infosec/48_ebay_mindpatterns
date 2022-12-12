@@ -1,0 +1,58 @@
+---
+layout: page
+title: Input Validation
+---
+
+<style>
+    label {
+        display: block;
+        margin: 8px 0;
+    }
+    input {
+        font-size: 1em;
+    }
+</style>
+
+<h1>{{ page.title }}</h1>
+
+<h2 class="clipped">Readme</h2>
+
+<p>Please <a href={{ "messaging/input-validation" | prepend: site.patterns_baseurl | prepend: site.patterns_url }}>read the documentation</a> to understand how these examples were created.</p>
+
+<hr />
+
+<h2 class="clipped">Examples</h2>
+
+<h3>Example 1: On Blur</h3>
+<p>Enter any value, then TAB out of field to receive a hard-coded client-side error notice.</p>
+
+<label for="age">Age</label>
+<div class="input-validation">
+    <input autocomplete="false" id="age" type="text" name="age" />
+    <span class="input-validation__status" role="status">
+        <span class="input-validation__description" id="age-error" hidden>Error! Please enter a valid age.</span>
+    </span>
+</div>
+
+<label for="shoesize">Shoe-Size</label>
+<div class="input-validation">
+    <input autocomplete="false" id="shoesize" type="text" name="shoesize" />
+    <span class="input-validation__status" role="status">
+        <span class="input-validation__description" id="shoesize-error" hidden>Error! Please enter a valid shoe size.</span>
+    </span>
+</div>
+
+<hr />
+
+<p><i>Updated</i>: Sep 21st, 2022</p>
+
+<script>
+    Array.prototype.slice.call(document.querySelectorAll('input')).forEach(function(inputEl) {
+        inputEl.addEventListener('blur', function(e) {
+            const messageEl = inputEl.nextElementSibling.children[0];
+            inputEl.setAttribute('aria-invalid', 'true');
+            inputEl.setAttribute('aria-describedby', messageEl.id);
+            messageEl.hidden = false;
+        });
+    });
+</script>

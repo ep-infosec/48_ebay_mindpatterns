@@ -1,0 +1,72 @@
+{
+  "author": "Ian McBurnie <ianmcburnie@hotmail.com>",
+  "maintainers": [
+    "Ian McBurnie <ianmcburnie@hotmail.com>"
+  ],
+  "scripts": {
+    "start": "npm run build && run-p browser-sync nodemon onchange",
+    "build": "npm run lint && npm run transpile && npm run bundle && npm run jekyll",
+    "jekyll": "bundler exec jekyll build --incremental --config _config.yml,_config.localhost.yml",
+    "browser-sync": "browser-sync start -s --ss _site --index _site/index.html --files '_site'",
+    "bundle": "webpack",
+    "clean": "rimraf _transpiled _site .sass-cache",
+    "fix": "eslint '_js/*.js' --fix",
+    "lint": "eslint '_js/*.js' > lint.log",
+    "nodemon": "nodemon --exec 'npm run bundle && npm run jekyll' -e html,css,scss,js --ignore 'static' --ignore '_site'",
+    "prepublishOnly": "npm run build",
+    "prep": "npm run prepublishOnly",
+    "transpile": "babel _js --out-dir _transpiled",
+    "onchange": "onchange _js -- npm run transpile"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ebay/mindpatterns"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.19.3",
+    "@babel/core": "^7.20.2",
+    "@babel/preset-env": "^7.20.2",
+    "@ebay/browserslist-config": "^2.4.1",
+    "@ebay/skin": "~13.5.2",
+    "browser-sync": "^2.27.10",
+    "css-loader": "^6.7.2",
+    "eslint": "^8.28.0",
+    "eslint-config-ebay": "^1.1.5",
+    "makeup-active-descendant": "~0.6.1",
+    "makeup-alert-dialog": "~0.2.0",
+    "makeup-combobox": "~0.3.0",
+    "makeup-confirm-dialog": "~0.2.0",
+    "makeup-dialog": "~0.4.1",
+    "makeup-dialog-button": "~0.3.0",
+    "makeup-drawer-dialog": "~0.1.0",
+    "makeup-expander": "~0.10.1",
+    "makeup-focusables": "~0.3.1",
+    "makeup-fullscreen-dialog": "~0.1.0",
+    "makeup-input-dialog": "~0.1.0",
+    "makeup-key-emitter": "~0.3.1",
+    "makeup-lightbox-dialog": "~0.1.0",
+    "makeup-listbox": "~0.3.1",
+    "makeup-listbox-button": "~0.4.0",
+    "makeup-menu": "~0.3.0",
+    "makeup-menu-button": "~0.3.0",
+    "makeup-modal": "~0.4.1",
+    "makeup-next-id": "~0.4.1",
+    "makeup-panel-dialog": "~0.1.0",
+    "makeup-prevent-scroll-keys": "~0.2.1",
+    "makeup-roving-tabindex": "~0.6.0",
+    "makeup-snackbar-dialog": "~0.1.0",
+    "makeup-switch": "~0.2.0",
+    "makeup-toast-dialog": "~0.1.0",
+    "mini-css-extract-plugin": "^2.7.0",
+    "nodemon": "^2.0.20",
+    "npm-run-all": "^4",
+    "onchange": "^7",
+    "rimraf": "^3",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.0"
+  },
+  "browserslist": [
+    "extends @ebay/browserslist-config"
+  ]
+}
